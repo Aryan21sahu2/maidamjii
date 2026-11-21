@@ -3,499 +3,558 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Magical Love Adventure 👑❤️</title>
-    <!-- Canvas Confetti & FontAwesome -->
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Fredoka+One&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <title>Sirf Tumhare Liye ❤️</title>
+    <!-- Tailwind CSS for clean, responsive layout -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Quicksand for soft, friendly, and gentle readability -->
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Tone.js for soft, soothing chime sound effects (no external audio URLs needed) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Poppins', sans-serif;
-            user-select: none;
-        }
-
+        /* Soft, headache-friendly pastel color palette & smooth animations */
         body {
-            background: radial-gradient(circle at center, #ff0844 0%, #ffb199 40%, #2e0854 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, #fdf6f6 0%, #f5eef8 50%, #fef9f3 100%);
+            color: #4a3f4b;
             overflow-x: hidden;
-            position: relative;
-            padding: 15px;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        /* Floating Background Particles */
-        .bg-particle {
-            position: fixed;
-            top: -10vh;
-            color: rgba(255, 255, 255, 0.7);
-            animation: floatDown linear infinite;
-            z-index: 0;
-            pointer-events: none;
-            filter: drop-shadow(0 0 10px rgba(255,255,255,0.8));
+        /* Gentle glassmorphism card */
+        .soft-card {
+            background: rgba(255, 255, 255, 0.82);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 228, 235, 0.9);
+            box-shadow: 0 20px 40px -15px rgba(186, 148, 175, 0.25);
         }
 
-        @keyframes floatDown {
-            0% { transform: translateY(0) rotate(0deg) scale(0.6); opacity: 1; }
-            100% { transform: translateY(110vh) rotate(360deg) scale(1.3); opacity: 0; }
-        }
-
-        /* Glassmorphic Main Card */
-        .card-stage {
-            background: rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 30px;
-            padding: 35px 25px;
-            width: 100%;
-            max-width: 650px;
-            text-align: center;
-            color: white;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
-            z-index: 10;
+        /* Stage transition animations */
+        .stage {
             display: none;
-            animation: cardIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            animation: fadeInScale 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+        .stage.active {
+            display: flex;
         }
 
-        .active-stage { display: block; }
-
-        @keyframes cardIn {
-            from { opacity: 0; transform: scale(0.8) translateY(30px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
+        @keyframes fadeInScale {
+            0% {
+                opacity: 0;
+                transform: translateY(14px) scale(0.97);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
         }
 
-        h1, h2 {
-            font-family: 'Dancing Script', cursive;
-            font-size: 42px;
-            margin-bottom: 10px;
-            color: #ffeaa7;
-            text-shadow: 0 0 20px rgba(255, 0, 127, 0.8);
+        /* Breathing Circle Animation (Stage 1) */
+        .breathe-circle {
+            transition: transform 4s ease-in-out, background-color 4s ease-in-out, box-shadow 4s ease-in-out;
+        }
+        .breathe-in {
+            transform: scale(1.42);
+            background-color: #f8d7e3;
+            box-shadow: 0 0 35px rgba(244, 180, 204, 0.6);
+        }
+        .breathe-out {
+            transform: scale(0.95);
+            background-color: #e8dff5;
+            box-shadow: 0 0 15px rgba(212, 194, 240, 0.4);
         }
 
-        p.subtitle { font-size: 14px; opacity: 0.95; margin-bottom: 25px; line-height: 1.6; }
-
-        /* Fancy Inputs & Buttons */
-        .custom-input {
-            width: 100%;
-            padding: 15px;
-            border-radius: 20px;
-            border: 2px solid rgba(255, 255, 255, 0.5);
-            background: rgba(255, 255, 255, 0.9);
-            color: #333;
-            font-size: 16px;
-            outline: none;
-            margin-bottom: 15px;
-            box-shadow: inset 0 3px 6px rgba(0,0,0,0.1);
-            transition: 0.3s;
-        }
-
-        .btn-glow {
-            background: linear-gradient(45deg, #ff007f, #7928ca);
-            color: white;
-            border: none;
-            padding: 16px 35px;
-            font-size: 18px;
-            font-weight: bold;
-            border-radius: 50px;
-            cursor: pointer;
-            box-shadow: 0 0 25px rgba(255, 0, 127, 0.8);
-            transition: all 0.3s ease;
-            width: 100%;
-            margin-top: 10px;
-        }
-
-        .btn-glow:hover {
-            transform: scale(1.03);
-            box-shadow: 0 0 35px rgba(255, 0, 127, 1);
-        }
-
-        /* Balloon Minigame */
-        .balloon-field {
-            position: relative;
-            height: 250px;
-            background: rgba(0,0,0,0.2);
-            border-radius: 20px;
-            overflow: hidden;
-            margin: 20px 0;
-            border: 2px dashed rgba(255,255,255,0.4);
-        }
-
-        .pop-balloon {
+        /* Floating Bubbles (Stage 2) */
+        .bubble {
             position: absolute;
-            font-size: 45px;
+            border-radius: 9999px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
             cursor: pointer;
-            animation: balloonFly 4s linear infinite;
+            box-shadow: inset -6px -6px 14px rgba(167, 139, 175, 0.2), 0 8px 20px rgba(180, 140, 170, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.85);
+            animation: floatBob 3.5s ease-in-out infinite alternate;
+            transition: transform 0.15s ease;
+        }
+        .bubble:active {
+            transform: scale(0.88);
         }
 
-        @keyframes balloonFly {
-            0% { bottom: -60px; }
-            100% { bottom: 270px; }
+        @keyframes floatBob {
+            0% { transform: translateY(0px) rotate(-2deg); }
+            100% { transform: translateY(-14px) rotate(2deg); }
         }
 
-        /* Candle & Cake Effect */
-        .candle-flame {
-            font-size: 35px;
-            display: inline-block;
-            animation: flameFlicker 0.3s infinite alternate;
+        /* Pop effect text */
+        .pop-feedback {
+            position: absolute;
+            pointer-events: none;
+            font-weight: 700;
+            color: #d96b93;
+            animation: popUpFade 0.85s ease-out forwards;
+        }
+        @keyframes popUpFade {
+            0% { opacity: 1; transform: translateY(0) scale(0.8); }
+            100% { opacity: 0; transform: translateY(-35px) scale(1.25); }
         }
 
-        @keyframes flameFlicker {
-            0% { transform: scale(1) rotate(-5deg); filter: drop-shadow(0 0 10px #ff0); }
-            100% { transform: scale(1.3) rotate(5deg); filter: drop-shadow(0 0 20px #f00); }
-        }
-
-        /* Scratch Card Box */
-        .scratch-card {
-            background: #ffeaa7;
-            color: #d63384;
-            padding: 25px;
-            border-radius: 20px;
-            font-size: 20px;
-            font-weight: bold;
-            margin: 20px 0;
-            cursor: pointer;
-            border: 3px dashed #ff007f;
-            transition: 0.4s;
-        }
-
-        /* Love Coupons */
-        .coupon-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 15px;
-            margin: 20px 0;
-        }
-
-        .coupon-box {
-            background: rgba(255,255,255,0.2);
-            border: 1px solid rgba(255,255,255,0.4);
-            padding: 15px;
-            border-radius: 18px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .coupon-box:hover { background: rgba(255,255,255,0.4); transform: translateY(-5deg); }
-
-        /* Polaroid Wall */
-        .polaroid-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .polaroid {
-            background: white;
-            padding: 8px 8px 18px 8px;
-            border-radius: 8px;
-            color: #333;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-            transform: rotate(-3deg);
-        }
-
-        .polaroid img { width: 100%; height: 110px; object-fit: cover; border-radius: 4px; }
-        .polaroid p { font-size: 11px; margin-top: 6px; font-weight: bold; }
-
-        /* Floating Sound Control */
-        .audio-btn {
+        /* Floating soft hearts for Stage 4 */
+        .floating-heart {
             position: fixed;
-            top: 20px;
-            right: 20px;
-            background: rgba(255, 255, 255, 0.9);
-            color: #ff007f;
-            border: none;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            cursor: pointer;
-            box-shadow: 0 0 20px rgba(255, 0, 127, 0.6);
-            z-index: 100;
-            font-size: 20px;
+            bottom: -30px;
+            pointer-events: none;
+            z-index: 50;
+            animation: floatHeartUp linear forwards;
+        }
+        @keyframes floatHeartUp {
+            0% {
+                transform: translateY(0) rotate(0deg) scale(0.8);
+                opacity: 0.9;
+            }
+            100% {
+                transform: translateY(-105vh) rotate(25deg) scale(1.2);
+                opacity: 0;
+            }
         }
     </style>
 </head>
-<body>
+<body class="min-h-screen flex flex-col items-center justify-center p-4 sm:p-6">
 
-    <!-- Background Particle Engine -->
-    <div id="particle-container"></div>
-
-    <!-- Background Romantic Song -->
-    <audio id="bg-music" loop preload="auto">
-        <source src="https://assets.mixkit.co/music/preview/mixkit-romantic-piano-wedding-399.mp3" type="audio/mpeg">
-    </audio>
-
-    <button class="audio-btn" onclick="toggleMusic()" title="Play/Pause Romantic Song">
-        <i id="music-icon" class="fas fa-music"></i>
-    </button>
-
-    <!-- STAGE 1: MAGICAL GATEWAY -->
-    <div class="card-stage active-stage" id="stage-1">
-        <h1>👑 Welcome My Queen 👑</h1>
-        <p class="subtitle">Enter your name & your Fav person name to launch your personalized interactive birthday realm!</p>
-
-        <input type="text" id="gf-name" class="custom-input" placeholder="Your Gorgeous Name 👸" required>
-        <input type="text" id="bf-name" class="custom-input" placeholder="Your Loving 's Name 🤴" required>
-
-        <button class="btn-glow" onclick="startAdventure()">Launch Surprise Adventure ✨</button>
-    </div>
-
-    <!-- STAGE 2: BALLOON POPPING GAME -->
-    <div class="card-stage" id="stage-2">
-        <h2>Level 1: Pop 5 Birthday Balloons 🎈</h2>
-        <p class="subtitle">Tap on the flying balloons to pop them! Pops Left: <b id="pops-left" style="color: #ffeaa7; font-size: 18px;">5</b></p>
-
-        <div class="balloon-field" id="balloon-field">
-            <!-- Dynamic Balloons Spawn Here -->
+    <!-- Top Subtle Progress Indicator -->
+    <div class="w-full max-w-md mb-5">
+        <div class="flex justify-between text-xs font-semibold text-[#8c768e] mb-1.5 px-1">
+            <span id="step-label">Step 1 of 4 • Thoda Relax</span>
+            <span id="sound-toggle" class="cursor-pointer hover:text-[#d6688f] transition">🔔 Soft Sound: ON</span>
+        </div>
+        <div class="w-full bg-[#ede2ec] h-2 rounded-full overflow-hidden">
+            <div id="progress-bar" class="bg-gradient-to-r from-[#f3a6c0] to-[#c9b1e8] h-full rounded-full transition-all duration-500" style="width: 25%;"></div>
         </div>
     </div>
 
-    <!-- STAGE 3: LOVE METER CALCULATOR -->
-    <div class="card-stage" id="stage-3">
-        <h2>Level 2: Love Compatibility Test 💖</h2>
-        <p class="subtitle">Testing love percentage between <b id="test-gf"></b> & <b id="test-bf"></b>...</p>
+    <!-- Main Container Card -->
+    <main class="soft-card w-full max-w-md rounded-3xl p-6 sm:p-8 relative overflow-hidden min-h-[450px] flex flex-col justify-between">
 
-        <div style="font-size: 70px; margin: 20px 0;" id="heart-pulse">💖</div>
-        <h3 id="love-percent" style="font-size: 36px; color: #ffeaa7;">0%</h3>
-
-        <button class="btn-glow" id="calc-btn" onclick="runLoveMeter()">Calculate Eternal Love ⚡</button>
-    </div>
-
-    <!-- STAGE 4: CANDLE BLOW & CAKE CUT -->
-    <div class="card-stage" id="stage-4">
-        <h2>Level 3: Blow Candle & Cut Cake 🕯️</h2>
-        <p class="subtitle">Close your eyes, make a sweet wish, and TAP the flame to blow it out!</p>
-
-        <div style="margin: 25px 0; cursor: pointer;" onclick="blowCandle()">
-            <div id="candle-flame" class="candle-flame">🔥</div>
-            <div style="font-size: 40px; margin-top: -10px;">🕯️</div>
-            <div id="cake-emoji" style="font-size: 85px; margin-top: -15px;">🎂</div>
-        </div>
-
-        <p id="cake-status" style="font-weight: bold; color: #ffeaa7;">👉 TAP THE FLAME TO BLOW! 👈</p>
-    </div>
-
-    <!-- STAGE 5: SCRATCH CARD WISHER -->
-    <div class="card-stage" id="stage-5">
-        <h2>Level 4: Secret Scratch Voucher 🎟️</h2>
-        <p class="subtitle">Tap below to scratch and reveal your secret birthday gift from <b class="bf-tag"></b>!</p>
-
-        <div class="scratch-card" id="scratch-box" onclick="scratchVoucher()">
-            ❓ TAP TO SCRATCH YOUR SURPRISE VOUCHER ❓
-        </div>
-
-        <button class="btn-glow" id="next-to-grand" style="display:none;" onclick="showGrandDashboard()">Enter Grand Gallery 💖</button>
-    </div>
-
-    <!-- STAGE 6: GRAND DASHBOARD & POLAROID MEMORIES -->
-    <div class="card-stage" id="stage-6">
-        <h1 style="font-size: 38px;">🎉 Happy Birthday <span id="final-gf" style="color: #ffeaa7;"></span>! 🎉</h1>
-        <p class="subtitle">
-            You are the absolute best thing that ever happened to me! Forever yours, <b id="final-bf" style="color: #ffeaa7;"></b> ❤️
-        </p>
-
-        <!-- Interactive Love Coupons -->
-        <h3 style="color: #ffeaa7; text-align: left; margin-top: 15px;">🎟️ Your Birthday Coupons:</h3>
-        <div class="coupon-grid">
-            <div class="coupon-box" onclick="claimCoupon(this, '🕯️ Romantic Candle Light Dinner Date!')">
-                <div style="font-size: 28px;">🍕</div>
-                <p style="font-size: 11px; margin-top: 5px;">Tap to Unlock</p>
+        <!-- ========================================================= -->
+        <!-- STAGE 1: HEADACHE RELIEF & BREATHING EXERCISE             -->
+        <!-- ========================================================= -->
+        <section id="stage-1" class="stage active flex-col items-center text-center my-auto space-y-6">
+            <div class="inline-block px-4 py-1.5 rounded-full bg-[#fce8ef] text-[#c75b82] text-xs font-bold tracking-wide">
+                ✨ Pehle Thoda Relax Karte Hain
             </div>
-            <div class="coupon-box" onclick="claimCoupon(this, '🤗 Unlimited Warm Hugs & Kisses!')">
-                <div style="font-size: 28px;">🧸</div>
-                <p style="font-size: 11px; margin-top: 5px;">Tap to Unlock</p>
-            </div>
-            <div class="coupon-box" onclick="claimCoupon(this, '🎬 Late Night Movie & Ice Cream!')">
-                <div style="font-size: 28px;">🍿</div>
-                <p style="font-size: 11px; margin-top: 5px;">Tap to Unlock</p>
-            </div>
-        </div>
 
-        <!-- Polaroid Wall -->
-        <div style="text-align: left; margin-top: 25px;">
-            <h3 style="color: #ffeaa7; font-size: 18px;">📸 Memory Polaroid Album</h3>
-            
-            <input type="file" id="img-picker" accept="image/*" style="display:none" onchange="uploadPhoto(event)">
-            <button class="btn-glow" style="padding: 10px 20px; font-size: 14px; width: auto; margin-top: 10px;" onclick="document.getElementById('img-picker').click()">
-                <i class="fas fa-camera"></i> Add Memory Photo
+            <!-- 👇 YAHAN APNI GF KA NICKNAME CHANGE KAR SAKTE HO (e.g., "Jaan", "Babu", "Cutie") -->
+            <h1 class="text-2xl sm:text-3xl font-bold text-[#4a394c] leading-snug">
+                Hey <span class="gf-name text-[#d4628b]">Cutie</span>... 🌸
+            </h1>
+
+            <p class="text-sm sm:text-base text-[#6d5b6f] leading-relaxed">
+                Mujhe pata hai meri wajah se tumhare sar mein dard ho raha hai aur tum upset ho. Sabse pehle ek gehri saans lo...
+            </p>
+
+            <!-- Animated Breathing Circle -->
+            <div class="relative w-44 h-44 flex items-center justify-center my-4">
+                <div id="breathe-circle" class="breathe-circle w-32 h-32 rounded-full bg-[#f8d7e3] flex items-center justify-center shadow-inner">
+                    <span id="breathe-text" class="text-sm font-bold text-[#5e4561] px-2">
+                        Ready?
+                    </span>
+                </div>
+            </div>
+
+            <p id="breathe-subtext" class="text-xs text-[#8f7b91] h-4">
+                Neeche button dabao aur circle ke saath saans lo
+            </p>
+
+            <button id="start-breathe-btn" onclick="startBreathing()" class="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-[#ee9cb8] to-[#cbaee8] text-white font-bold shadow-md hover:opacity-95 active:scale-98 transition cursor-pointer">
+                Start Headache Relief (6 Sec) 🌿
             </button>
+        </section>
 
-            <div class="polaroid-grid" id="polaroid-grid">
-                <div class="polaroid">
-                    <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=500" alt="Love">
-                    <p>Forever Together ❤️</p>
+        <!-- ========================================================= -->
+        <!-- STAGE 2: "GUSSA POP" MINI-GAME                            -->
+        <!-- ========================================================= -->
+        <section id="stage-2" class="stage flex-col items-center text-center h-full justify-between space-y-4">
+            <div>
+                <div class="inline-block px-4 py-1.5 rounded-full bg-[#efe8fc] text-[#7c5cb8] text-xs font-bold mb-2">
+                    🫧 Gussa & Stress Buster
                 </div>
-                <div class="polaroid">
-                    <img src="https://images.unsplash.com/photo-1513151233558-d860c5398176?w=500" alt="Party">
-                    <p>Best Birthday Ever 🥳</p>
+                <h2 class="text-xl sm:text-2xl font-bold text-[#4a394c]">
+                    Saare Bubbles Phod Do!
+                </h2>
+                <p class="text-xs sm:text-sm text-[#6d5b6f] mt-1">
+                    Mere gussa aur tumhare headache ko tap karke khatam kar do 👇
+                </p>
+            </div>
+
+            <!-- Interactive Bubble Area -->
+            <div id="bubble-arena" class="relative w-full h-64 rounded-2xl bg-[#fbf6fa] border border-[#f2e4ef] overflow-hidden my-2">
+                <!-- Bubbles will be injected dynamically via JS -->
+            </div>
+
+            <div class="text-xs font-semibold text-[#8c768e]">
+                Bubbles Left: <span id="bubbles-remaining" class="text-[#d4628b] font-bold">5</span>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- STAGE 3: PLAYFUL "MAAF KARO" SCREEN                       -->
+        <!-- ========================================================= -->
+        <section id="stage-3" class="stage flex-col items-center text-center my-auto space-y-6">
+            <div class="text-5xl animate-bounce">🥺👉👈</div>
+
+            <h2 class="text-2xl font-bold text-[#4a394c]">
+                Ab Ek Chhota Sa Sawal...
+            </h2>
+
+            <!-- 👇 YAHAN BHI NICKNAME EDIT KAR SAKTE HO -->
+            <p class="text-sm sm:text-base text-[#6d5b6f] leading-relaxed">
+                Maine jo gussa dikhaya uske liye sach mein dil se sorry <span class="gf-name font-bold text-[#d4628b]">Cutie</span>. Kya tum apne is pagal ko maaf karogi?
+            </p>
+
+            <p id="plead-message" class="text-xs font-semibold text-[#c75b82] h-5 transition-all">
+                Please maan jao na... ❤️
+            </p>
+
+            <!-- Playful Buttons Container -->
+            <div class="w-full flex flex-col items-center justify-center gap-3 pt-2 relative min-h-[130px]">
+                <button id="yes-btn" onclick="forgiveMe()" class="py-3.5 px-8 rounded-2xl bg-gradient-to-r from-[#eb8fb0] to-[#c49ee8] text-white font-bold text-base shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer z-10">
+                    Maaf Kiya ❤️
+                </button>
+
+                <button id="no-btn" onclick="dodgeNoButton()" class="py-2 px-5 rounded-xl bg-[#f1e7ef] text-[#7a667c] font-semibold text-xs hover:bg-[#e8dae5] transition-all duration-200 cursor-pointer">
+                    Nahi Karungi 😤
+                </button>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- STAGE 4: HEARTFELT LETTER & VIRTUAL CARE PACKAGE          -->
+        <!-- ========================================================= -->
+        <section id="stage-4" class="stage flex-col items-center text-center space-y-5">
+            <div class="inline-block px-4 py-1.5 rounded-full bg-[#fce8ef] text-[#c75b82] text-xs font-bold">
+                💖 Thank You Meri Jaan!
+            </div>
+
+            <h2 class="text-2xl font-bold text-[#4a394c]">
+                I Love You So Much! 🥰
+            </h2>
+
+            <!-- 👇 APOLOGY LETTER MESSAGE (Apne hisaab se customize kar sakte ho) -->
+            <div class="bg-[#fdf8fb] border border-[#f5e3ee] rounded-2xl p-4 text-left text-xs sm:text-sm text-[#5b495d] leading-relaxed space-y-2 shadow-inner">
+                <p>Meri Pyaari <span class="gf-name font-bold text-[#d4628b]">Cutie</span>,</p>
+                <p>
+                    Mujhe bilkul bhi accha nahi lag raha ki meri wajah se tumhari tabiyat kharab hui aur tumhare sar mein dard hua. Tumhari smile mere liye sabse important hai, aur main promise karta hoon aage se aise gussa nahi karunga.
+                </p>
+                <p class="font-semibold text-[#c75b82]">
+                    Ab jaldi se aaram karo, aur neeche apna Care Package claim karo! 👇
+                </p>
+            </div>
+
+            <!-- Interactive Care Package Coupons -->
+            <div class="w-full space-y-2 text-left">
+                <p class="text-xs font-bold text-[#8c768e] uppercase tracking-wider pl-1">
+                    Tap karke Redeem karo:
+                </p>
+
+                <div onclick="redeemCoupon(this, '☕ Garma-Garam Chai / Coffee')" class="coupon-card flex items-center justify-between p-3 rounded-2xl bg-white border border-[#f2dfeb] cursor-pointer hover:border-[#e69db8] transition shadow-sm">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl">☕</span>
+                        <div>
+                            <p class="text-sm font-bold text-[#4a394c]">Headache Relief Chai / Coffee</p>
+                            <p class="text-[11px] text-[#8c768e]">Special mere haathon se (ya order!)</p>
+                        </div>
+                    </div>
+                    <span class="status-badge text-xs font-bold px-2.5 py-1 rounded-lg bg-[#fce8ef] text-[#c75b82]">Claim</span>
+                </div>
+
+                <div onclick="redeemCoupon(this, '💆‍♀️ 15-Min Head Massage')" class="coupon-card flex items-center justify-between p-3 rounded-2xl bg-white border border-[#f2dfeb] cursor-pointer hover:border-[#e69db8] transition shadow-sm">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl">💆‍♀️</span>
+                        <div>
+                            <p class="text-sm font-bold text-[#4a394c]">Pyara Sa Head Massage</p>
+                            <p class="text-[11px] text-[#8c768e]">Saara dard bhagane ke liye</p>
+                        </div>
+                    </div>
+                    <span class="status-badge text-xs font-bold px-2.5 py-1 rounded-lg bg-[#fce8ef] text-[#c75b82]">Claim</span>
+                </div>
+
+                <div onclick="redeemCoupon(this, '🍨 Tumhari Favourite Ice Cream')" class="coupon-card flex items-center justify-between p-3 rounded-2xl bg-white border border-[#f2dfeb] cursor-pointer hover:border-[#e69db8] transition shadow-sm">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl">🍨</span>
+                        <div>
+                            <p class="text-sm font-bold text-[#4a394c]">Mood Fresh Ice Cream Treat</p>
+                            <p class="text-[11px] text-[#8c768e]">Jo flavour tum bolo!</p>
+                        </div>
+                    </div>
+                    <span class="status-badge text-xs font-bold px-2.5 py-1 rounded-lg bg-[#fce8ef] text-[#c75b82]">Claim</span>
                 </div>
             </div>
-        </div>
-    </div>
+
+            <!-- Toast Message Box for Coupon Redemption -->
+            <div id="coupon-toast" class="hidden w-full py-2 px-3 rounded-xl bg-[#e9f7ef] text-[#2e7d52] text-xs font-bold transition-all">
+                Coupon Claimed! Screenshot bhej do mujhe ❤️
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Subtle Footer -->
+    <footer class="mt-4 text-[11px] text-[#9b879d] text-center">
+        Made with ❤️ sirf tumhari smile wapas lane ke liye
+    </footer>
 
     <script>
-        // Floating Particle Engine
-        function generateParticles() {
-            const container = document.getElementById('particle-container');
-            const p = document.createElement('div');
-            p.className = 'bg-particle';
-            p.innerHTML = ['❤️', '💖', '✨', '🎈', '👑', '🌸', '🎁'][Math.floor(Math.random() * 7)];
-            p.style.left = Math.random() * 100 + 'vw';
-            p.style.animationDuration = Math.random() * 3 + 3 + 's';
-            p.style.fontSize = Math.random() * 15 + 16 + 'px';
-            container.appendChild(p);
-            setTimeout(() => p.remove(), 6000);
-        }
-        setInterval(generateParticles, 250);
+        // =========================================================================
+        // 1. CUSTOMIZATION SETTING (YAHAN APNI GF KA NICKNAME SET KAREIN)
+        // =========================================================================
+        const GF_NICKNAME = "Cutie"; // <-- Isko change karke "Jaan", "Babu", ya unka naam likh dein
 
-        // Music Control
-        const audio = document.getElementById('bg-music');
-        let isPlaying = false;
+        // Apply nickname across all placeholders on page load
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelectorAll(".gf-name").forEach(el => {
+                el.textContent = GF_NICKNAME;
+            });
+        });
 
-        function toggleMusic() {
-            const icon = document.getElementById('music-icon');
-            if (isPlaying) {
-                audio.pause();
-                icon.className = 'fas fa-music';
-            } else {
-                audio.play();
-                icon.className = 'fas fa-pause';
-            }
-            isPlaying = !isPlaying;
-        }
+        // =========================================================================
+        // 2. SOFT AUDIO FEEDBACK (TONE.JS - GENTLE ON HEADACHES)
+        // =========================================================================
+        let soundEnabled = true;
+        let synth = null;
 
-        // Global Variables
-        let gf = "", bf = "";
-        let popsNeeded = 5;
-
-        function showStage(stageId) {
-            document.querySelectorAll('.card-stage').forEach(s => s.classList.remove('active-stage'));
-            document.getElementById(stageId).classList.add('active-stage');
-        }
-
-        // Stage 1: Entry
-        function startAdventure() {
-            gf = document.getElementById('gf-name').value || "Princess";
-            bf = document.getElementById('bf-name').value || "Your Boyfriend";
-
-            document.getElementById('test-gf').innerText = gf;
-            document.getElementById('test-bf').innerText = bf;
-            document.getElementById('final-gf').innerText = gf;
-            document.getElementById('final-bf').innerText = bf;
-            document.querySelectorAll('.bf-tag').forEach(el => el.innerText = bf);
-
-            audio.play().catch(() => {});
-            isPlaying = true;
-            document.getElementById('music-icon').className = 'fas fa-pause';
-
-            showStage('stage-2');
-            spawnBalloons();
-        }
-
-        // Stage 2: Balloon Game
-        function spawnBalloons() {
-            const field = document.getElementById('balloon-field');
-            field.innerHTML = '';
-            for(let i=0; i<8; i++) {
-                const b = document.createElement('div');
-                b.className = 'pop-balloon';
-                b.innerHTML = ['🎈', '💖', '🎁', '🎂'][Math.floor(Math.random() * 4)];
-                b.style.left = (i * 12 + 5) + '%';
-                b.style.animationDelay = (Math.random() * 2) + 's';
-                b.onclick = function() {
-                    this.remove();
-                    popsNeeded--;
-                    document.getElementById('pops-left').innerText = popsNeeded;
-                    triggerConfetti();
-                    if(popsNeeded <= 0) {
-                        alert("🎉 Balloon Challenge Completed! Proceeding to Love Meter!");
-                        showStage('stage-3');
-                    }
-                };
-                field.appendChild(b);
-            }
-        }
-
-        // Stage 3: Love Meter
-        function runLoveMeter() {
-            const btn = document.getElementById('calc-btn');
-            btn.disabled = true;
-            let current = 0;
-            const timer = setInterval(() => {
-                current += 5;
-                document.getElementById('love-percent').innerText = current + '%';
-                if(current >= 1000) {
-                    clearInterval(timer);
-                    document.getElementById('love-percent').innerText = "1000% ETERNAL LOVE! ❤️";
-                    triggerFireworks();
-                    setTimeout(() => showStage('stage-4'), 2000);
+        // Initialize soft sine-wave chime on first user interaction
+        function playSoftChime(note = "C5", duration = "8n") {
+            if (!soundEnabled) return;
+            try {
+                if (!synth) {
+                    synth = new Tone.Synth({
+                        oscillator: { type: "sine" },
+                        envelope: { attack: 0.05, decay: 0.2, sustain: 0.1, release: 0.8 },
+                        volume: -14 // Very gentle, low volume so it never hurts her head
+                    }).toDestination();
                 }
-            }, 30);
-        }
-
-        // Stage 4: Candle Blow
-        function blowCandle() {
-            document.getElementById('candle-flame').style.display = 'none';
-            document.getElementById('cake-emoji').innerText = '🍰';
-            document.getElementById('cake-status').innerText = '🎉 YAAAAY! Cake Cut Successfully!';
-            triggerFireworks();
-
-            setTimeout(() => showStage('stage-5'), 2000);
-        }
-
-        // Stage 5: Scratch Card
-        function scratchVoucher() {
-            const box = document.getElementById('scratch-box');
-            box.style.background = '#ffffff';
-            box.style.color = '#ff007f';
-            box.innerHTML = `🎁 VIP BIRTHDAY PASS: Unlimited Shopping & Endless Love from ${bf}! ❤️`;
-            triggerFireworks();
-            document.getElementById('next-to-grand').style.display = 'block';
-        }
-
-        function showGrandDashboard() {
-            showStage('stage-6');
-            triggerFireworks();
-        }
-
-        // Coupons Claim
-        function claimCoupon(box, text) {
-            box.innerHTML = `<b style="font-size:12px; color:#ffeaa7;">${text}</b>`;
-            triggerConfetti();
-        }
-
-        // Photo Upload
-        function uploadPhoto(e) {
-            const file = e.target.files[0];
-            if(file) {
-                const reader = new FileReader();
-                reader.onload = function(evt) {
-                    const caption = prompt("Enter a sweet caption for this photo:", "Precious Moment ❤️");
-                    const grid = document.getElementById('polaroid-grid');
-                    const card = document.createElement('div');
-                    card.className = 'polaroid';
-                    card.innerHTML = `
-                        <img src="${evt.target.result}" alt="Memory">
-                        <p>${caption || "Sweet Memory ❤️"}</p>
-                    `;
-                    grid.prepend(card);
-                };
-                reader.readAsDataURL(file);
+                if (Tone.context.state !== "running") {
+                    Tone.start();
+                }
+                synth.triggerAttackRelease(note, duration);
+            } catch (e) {
+                // Ignore audio errors if browser restricts autoplay
             }
         }
 
-        // Confetti Engine
-        function triggerConfetti() {
-            confetti({ particleCount: 40, spread: 60, origin: { y: 0.7 } });
+        document.getElementById("sound-toggle").addEventListener("click", () => {
+            soundEnabled = !soundEnabled;
+            document.getElementById("sound-toggle").textContent = soundEnabled ? "🔔 Soft Sound: ON" : "🔕 Soft Sound: OFF";
+        });
+
+        // =========================================================================
+        // 3. STAGE NAVIGATION HELPER
+        // =========================================================================
+        const stepLabels = [
+            "Step 1 of 4 • Thoda Relax",
+            "Step 2 of 4 • Gussa Pop Game",
+            "Step 3 of 4 • Ek Chhota Sawal",
+            "Step 4 of 4 • Tumhara Gift ❤️"
+        ];
+
+        function goToStage(stageNumber) {
+            document.querySelectorAll(".stage").forEach(el => el.classList.remove("active"));
+            document.getElementById(`stage-${stageNumber}`).classList.add("active");
+
+            // Update progress bar and label
+            document.getElementById("progress-bar").style.width = `${stageNumber * 25}%`;
+            document.getElementById("step-label").textContent = stepLabels[stageNumber - 1];
+
+            if (stageNumber === 2) {
+                initBubbles();
+            } else if (stageNumber === 4) {
+                launchHeartCelebration();
+            }
         }
 
-        function triggerFireworks() {
-            confetti({ particleCount: 150, spread: 100, origin: { y: 0.5 } });
+        // =========================================================================
+        // 4. STAGE 1 LOGIC: 6-SECOND CALMING BREATHING EXERCISE
+        // =========================================================================
+        function startBreathing() {
+            const btn = document.getElementById("start-breathe-btn");
+            const circle = document.getElementById("breathe-circle");
+            const text = document.getElementById("breathe-text");
+            const subtext = document.getElementById("breathe-subtext");
+
+            btn.disabled = true;
+            btn.classList.add("opacity-50", "cursor-not-allowed");
+            btn.textContent = "Aankhein band karke feel karo...";
+
+            // Inhale phase (3.5 seconds)
+            playSoftChime("E4", "2n");
+            circle.classList.add("breathe-in");
+            text.textContent = "Gehri Saans Lo... 🌸";
+            subtext.textContent = "Dheere-dheere andar saans lo...";
+
+            setTimeout(() => {
+                // Exhale phase (3.5 seconds)
+                playSoftChime("C4", "2n");
+                circle.classList.remove("breathe-in");
+                circle.classList.add("breathe-out");
+                text.textContent = "Saara Stress Chhod Do 🍃";
+                subtext.textContent = "Sar ka dard aur tension bahar jaane do...";
+            }, 3500);
+
+            setTimeout(() => {
+                // Automatically transition to Stage 2
+                playSoftChime("G4", "4n");
+                goToStage(2);
+            }, 7200);
+        }
+
+        // =========================================================================
+        // 5. STAGE 2 LOGIC: INTERACTIVE "GUSSA POP" BUBBLE GAME
+        // =========================================================================
+        const bubbleItems = [
+            { label: "Mera Gussa 😠", color: "bg-[#ffd6e4]", top: "12%", left: "10%", size: "w-24 h-24" },
+            { label: "Sar Dard 🤕", color: "bg-[#e3d7ff]", top: "15%", left: "58%", size: "w-24 h-24" },
+            { label: "Bematlab Zid 😤", color: "bg-[#ffe5d4]", top: "48%", left: "34%", size: "w-24 h-24" },
+            { label: "Tension ☁️", color: "bg-[#d8f3ec]", top: "55%", left: "8%", size: "w-20 h-20" },
+            { label: "Udaasi 😢", color: "bg-[#fbe0f2]", top: "52%", left: "66%", size: "w-22 h-22" }
+        ];
+
+        const popCompliments = ["Pop! ✨", "Gayab! 🌸", "Nice! 💖", "Bye-bye! 🍃", "Yay! 🥰"];
+        let remainingBubbles = bubbleItems.length;
+
+        function initBubbles() {
+            const arena = document.getElementById("bubble-arena");
+            arena.innerHTML = "";
+            remainingBubbles = bubbleItems.length;
+            document.getElementById("bubbles-remaining").textContent = remainingBubbles;
+
+            bubbleItems.forEach((item, index) => {
+                const bubble = document.createElement("div");
+                bubble.className = `bubble ${item.color} ${item.size} p-2 text-xs font-bold text-[#4a394c]`;
+                bubble.style.top = item.top;
+                bubble.style.left = item.left;
+                bubble.style.animationDelay = `${index * 0.4}s`;
+                bubble.innerHTML = `<span>${item.label}</span>`;
+
+                bubble.addEventListener("click", (e) => {
+                    popBubble(bubble, arena, index);
+                });
+
+                arena.appendChild(bubble);
+            });
+        }
+
+        function popBubble(bubbleEl, arenaEl, index) {
+            if (bubbleEl.dataset.popped) return;
+            bubbleEl.dataset.popped = "true";
+
+            // Gentle pop note
+            const notes = ["C5", "D5", "E5", "G5", "A5"];
+            playSoftChime(notes[index % notes.length], "16n");
+
+            // Create cute pop feedback text at bubble's position
+            const feedback = document.createElement("div");
+            feedback.className = "pop-feedback text-sm";
+            feedback.style.left = bubbleEl.style.left;
+            feedback.style.top = bubbleEl.style.top;
+            feedback.textContent = popCompliments[index % popCompliments.length];
+            arenaEl.appendChild(feedback);
+
+            // Shrink & remove bubble
+            bubbleEl.style.transform = "scale(1.3)";
+            bubbleEl.style.opacity = "0";
+            setTimeout(() => bubbleEl.remove(), 180);
+
+            remainingBubbles--;
+            document.getElementById("bubbles-remaining").textContent = remainingBubbles;
+
+            // Advance to Stage 3 once all bubbles are popped
+            if (remainingBubbles === 0) {
+                setTimeout(() => {
+                    playSoftChime("C6", "4n");
+                    goToStage(3);
+                }, 650);
+            }
+        }
+
+        // =========================================================================
+        // 6. STAGE 3 LOGIC: PLAYFUL "MAAF KARO" DODGING BUTTON
+        // =========================================================================
+        let noClickCount = 0;
+        const pleadMessages = [
+            "Arre yaar, aise mat karo 🥺",
+            "Ek baar aur soch lo... chocolate bhi dunga! 🍫",
+            "Dekho 'Maaf Kiya' button kitna bada ho gaya hai ❤️",
+            "Ab toh 'Nahi' ka option hi gayab hone wala hai 🙈"
+        ];
+
+        function dodgeNoButton() {
+            playSoftChime("A4", "16n");
+            const noBtn = document.getElementById("no-btn");
+            const yesBtn = document.getElementById("yes-btn");
+            const pleadText = document.getElementById("plead-message");
+
+            // Update pleading text
+            pleadText.textContent = pleadMessages[Math.min(noClickCount, pleadMessages.length - 1)];
+
+            // Grow the "Maaf Kiya" button
+            noClickCount++;
+            const newScale = 1 + (noClickCount * 0.16);
+            yesBtn.style.transform = `scale(${Math.min(newScale, 1.65)})`;
+
+            // Move or shrink the "Nahi Karungi" button playfully
+            if (noClickCount >= 4) {
+                noBtn.style.opacity = "0";
+                noBtn.style.pointerEvents = "none";
+            } else {
+                const randomX = (Math.random() - 0.5) * 140;
+                const randomY = (Math.random() - 0.5) * 40;
+                const shrinkScale = Math.max(1 - noClickCount * 0.18, 0.55);
+                noBtn.style.transform = `translate(${randomX}px, ${randomY}px) scale(${shrinkScale})`;
+            }
+        }
+
+        function forgiveMe() {
+            playSoftChime("E5", "4n");
+            setTimeout(() => playSoftChime("G5", "4n"), 150);
+            setTimeout(() => playSoftChime("C6", "2n"), 300);
+            goToStage(4);
+        }
+
+        // =========================================================================
+        // 7. STAGE 4 LOGIC: HEART CELEBRATION & COUPON REDEMPTION
+        // =========================================================================
+        function launchHeartCelebration() {
+            const hearts = ["❤️", "💖", "🌸", "🥰", "✨"];
+            for (let i = 0; i < 22; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement("div");
+                    heart.className = "floating-heart text-2xl";
+                    heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+                    heart.style.left = `${Math.random() * 92 + 4}vw`;
+                    heart.style.animationDuration = `${Math.random() * 2.5 + 3}s`;
+                    document.body.appendChild(heart);
+
+                    setTimeout(() => heart.remove(), 5500);
+                }, i * 160);
+            }
+        }
+
+        function redeemCoupon(cardEl, couponName) {
+            playSoftChime("G5", "8n");
+            const badge = cardEl.querySelector(".status-badge");
+            badge.textContent = "Claimed ✅";
+            badge.classList.remove("bg-[#fce8ef]", "text-[#c75b82]");
+            badge.classList.add("bg-[#dff5e8]", "text-[#2d7a4f]");
+
+            cardEl.classList.add("bg-[#f9fdfb]", "border-[#bce3cc]");
+
+            const toast = document.getElementById("coupon-toast");
+            toast.textContent = `${couponName} Claimed! Iska screenshot bhej do ❤️`;
+            toast.classList.remove("hidden");
         }
     </script>
 </body>
